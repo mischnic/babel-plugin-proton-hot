@@ -1,5 +1,5 @@
 {
-  "name": "babel-plugin-proton-hot",
+  "name": "@mischnic/babel-plugin-proton-hot",
   "author": "Niklas Mischkulnig",
   "version": "1.0.0",
   "license": "MIT",
