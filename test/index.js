@@ -1,4 +1,5 @@
 const babel = require("babel-core");
+const path = require("path");
 const fs = require("fs");
 process.chdir(__dirname);
 
@@ -19,23 +20,19 @@ const notOk = (name, msg) => {
 	failed++;
 };
 
-const transpileTo = (from, to, env) =>
+const PLUGIN_PATH = path.resolve("../");
+
+const transpileTo = (src, dst, env) =>
 	fs.writeFileSync(
-		to,
+		dst,
 		babel.transformFileSync(
-			from,
-			Object.assign(
-				{
-					ast: false
-				},
-				env
-					? {
-							babelrc: false,
-							presets: ["env", "react"],
-							plugins: ["../../../index.js"]
-					  }
-					: {}
-			)
+			src,
+			Object.assign({
+				ast: false,
+				babelrc: false,
+				presets: env ? ["env", "react"] : ["react"],
+				plugins: [PLUGIN_PATH]
+			})
 		).code
 	);
 
