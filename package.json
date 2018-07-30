@@ -1,7 +1,7 @@
 {
   "name": "@mischnic/babel-plugin-proton-hot",
   "author": "Niklas Mischkulnig",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "description": "Transform proton-native code to be hot reloadable",
   "main": "index.js",
