@@ -272,6 +272,9 @@ const ID = (function() {
 		visitor: {
 			// replace exports with a object to identify react component imports later on
 			ExportDefaultDeclaration(path, { file }) {
+				if (!file[REACT_COMPS]) {
+					return;
+				}
 				if (
 					t.isIdentifier(path.node.declaration) &&
 					isUpperCase(path.node.declaration.name) &&
@@ -346,6 +349,9 @@ const ID = (function() {
 				}
 			},
 			ExportNamedDeclaration(path, { file }) {
+				if (!file[REACT_COMPS]) {
+					return;
+				}
 				for (let s of path.node.specifiers) {
 					// TODO unify with default export?
 					// heuristic for detecting react component
@@ -385,6 +391,9 @@ const ID = (function() {
 
 			// replace imports with hot reloading proxy wrappers if a component is imported
 			ImportDeclaration(path, { file }) {
+				if (!file[REACT_COMPS]) {
+					return;
+				}
 				const node = path.node;
 				const proxies = [];
 				if (path.node.source.value.match(shouldDoImport)) {
@@ -421,16 +430,17 @@ const ID = (function() {
 					let skip = false;
 					path.parent.comments.forEach(v => {
 						if (v.type === "CommentLine" && skipPattern.test(v.value) && v.start == 0) {
-							path.skip();
 							skip = true;
 						}
 					});
-					if (skip) {
-						return;
+					if (!skip) {
+						file[REACT_COMPS] = [];
 					}
-					file[REACT_COMPS] = [];
 				},
 				exit(path, { file }) {
+					if (!file[REACT_COMPS]) {
+						return;
+					}
 					// run the module.hot wrapper
 					if (file[MODULE_HOT]) {
 						path.node.body.push(hotWrapperRunTemplate({ ID: file[MODULE_HOT] }));
@@ -438,6 +448,9 @@ const ID = (function() {
 				}
 			},
 			CallExpression(path, { file }) {
+				if (!file[REACT_COMPS]) {
+					return;
+				}
 				if (t.isIdentifier(path.node.callee) && !path.node[KEEP_RENDER]) {
 					// patch the proton-native.render call
 					const declaration = path.scope.getBinding(path.node.callee.name);
@@ -469,6 +482,9 @@ const ID = (function() {
 				}
 			},
 			ClassDeclaration({ node, scope }, { file }) {
+				if (!file[REACT_COMPS]) {
+					return;
+				}
 				// Maintain a list of React.[Pure]Component subclasses
 				if (isReactComp(node, scope)) {
 					file[REACT_COMPS].push(node.id);
