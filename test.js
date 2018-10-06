@@ -5,7 +5,7 @@ const flatMap = require("array.prototype.flatmap");
 
 const plugin = require(".");
 
-const files = fs.readdirSync("test/units");
+const files = fs.readdirSync("tests");
 
 pluginTester({
 	pluginName: "babel-plugin-proton-hot",
@@ -18,16 +18,16 @@ pluginTester({
 	tests: flatMap(files.filter(v => !v.startsWith(".")), v => [
 		{
 			title: v,
-			fixture: path.join("test", "units", v, "app.js"),
-			outputFixture: path.join("test", "units", v, "_ref", "app.js"),
+			fixture: path.join("tests", v, "app.js"),
+			outputFixture: path.join("tests", v, "_ref", "app.js"),
 			babelOptions: {
 				presets: ["react"]
 			}
 		},
 		{
 			title: v + " (env)",
-			fixture: path.join("test", "units", v, "app.js"),
-			outputFixture: path.join("test", "units", v, "_ref_env", "app.js"),
+			fixture: path.join("tests", v, "app.js"),
+			outputFixture: path.join("tests", v, "_ref_env", "app.js"),
 			babelOptions: {
 				presets: ["env", "react"]
 			}
