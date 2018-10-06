@@ -6,20 +6,22 @@
   "description": "Transform proton-native code to be hot reloadable",
   "main": "index.js",
   "scripts": {
-    "lint": "prettier --use-tabs --tab-width=4 --print-width=100 --write index.js test/index.js test/units/*/*.js",
-    "test": "node test/index.js | tap-spec",
+    "lint": "prettier --use-tabs --tab-width=4 --print-width=100 --write index.js test.js test/units/*/*.js",
+    "test": "jest",
     "coverage": "nyc --include index.js --reporter html --reporter text npm run test"
   },
   "dependencies": {
     "react-proxy": "^1.1.8"
   },
   "devDependencies": {
+    "array.prototype.flatmap": "^1.2.1",
     "babel-core": "^6.26.3",
+    "babel-plugin-tester": "^5.5.1",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "nyc": "^12.0.2",
-    "prettier": "^1.13.7",
-    "tap-spec": "^5.0.0"
+    "jest": "^23.6.0",
+    "nyc": "^13.0.1",
+    "prettier": "^1.13.7"
   },
   "files": [
     "index.js"

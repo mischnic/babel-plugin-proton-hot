@@ -1,6 +1,4 @@
 node_modules/
 
-test/units/*/_out*
-
 .nyc_output
 coverage
